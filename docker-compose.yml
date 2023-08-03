@@ -37,17 +37,12 @@ services:
       - ./src:/var/www/html
       - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
 
-  mysql:
+  mariadb:
     build:
-      context: ./docker/mysql
-    image: ${APP_NAME}-mysql
-    container_name: ${APP_NAME}-mysql
+      context: ./docker/mariadb
+    image: ${APP_NAME}-mariadb
+    container_name: ${APP_NAME}-mariadb
     restart: unless-stopped
-    ulimits:
-      nproc: 65535
-      nofile:
-        soft: 20000
-        hard: 40000
     tty: true
     ports:
       - ${MYSQL_PORT}:3306
@@ -60,8 +55,8 @@ services:
     networks:
       - main
     volumes:
-      - mysql_data:/var/lib/mysql
-      - "./docker/mysql/my.cnf:/etc/mysql/my.cnf"
+      - mariadb_data:/var/lib/mysql
+      - "./docker/mariadb/my.cnf:/etc/mysql/my.cnf"
 
 networks:
   main:
@@ -69,6 +64,6 @@ networks:
     driver: bridge
 
 volumes:
-  mysql_data:
-    name: ${APP_NAME}-mysql-volume
+  mariadb_data:
+    name: ${APP_NAME}-mariadb-volume
     driver: local
