@@ -5,10 +5,10 @@ services:
     build:
       context: ./docker/php
       args:
-      - INSTALL_MYSQL=${INSTALL_MYSQL}
-      - INSTALL_GD=${INSTALL_GD}
-      - INSTALL_XDEBUG=${INSTALL_XDEBUG}
-      - APP_USER=${APP_USER}
+        - INSTALL_MYSQL=${INSTALL_MYSQL}
+        - INSTALL_GD=${INSTALL_GD}
+        - INSTALL_XDEBUG=${INSTALL_XDEBUG}
+        - APP_USER=${APP_USER}
     image: ${APP_NAME}-php
     container_name: ${APP_NAME}-php
     restart: unless-stopped
@@ -43,6 +43,11 @@ services:
     image: ${APP_NAME}-mysql
     container_name: ${APP_NAME}-mysql
     restart: unless-stopped
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 20000
+        hard: 40000
     tty: true
     ports:
       - ${MYSQL_PORT}:3306
